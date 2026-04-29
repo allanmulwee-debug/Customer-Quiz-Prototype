@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Raborn IT — Security Profile</title>
+<meta name="description" content="A 5-minute security posture self-assessment, aligned to the CISA Cybersecurity Performance Goals and NIST Cybersecurity Framework 2.0." />
+<style>
+  :root {
+    --brand: #1F3A68;
+    --brand-2: #2E75B6;
+    --ink: #1a1d24;
+    --muted: #5a6470;
+    --line: #e3e8ef;
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --good: #2f8b5a;
+    --warn: #d18b27;
+    --bad: #c14a3f;
+    --shadow: 0 6px 24px rgba(15, 30, 60, .07), 0 1px 3px rgba(15, 30, 60, .05);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--brand-2); }
+  /* ---------- Header ---------- */
+  header.site {
+    background: var(--brand);
+    color: #fff;
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 4px solid var(--brand-2);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 700; letter-spacing: .04em; font-size: 18px;
+  }
+  .brand .mark {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: linear-gradient(135deg, #ffffff 0%, #c9d6ec 100%);
+    color: var(--brand);
+    display: grid; place-items: center; font-weight: 800; font-size: 15px;
+  }
+  header.site .meta { font-size: 13px; opacity: .85; }
+  /* ---------- Layout ---------- */
+  main { max-width: 880px; margin: 0 auto; padding: 28px 20px 80px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+  }
+  h1 { font-size: 30px; margin: 0 0 8px; color: var(--brand); letter-spacing: -.01em; }
+  h2 { font-size: 22px; margin: 0 0 6px; color: var(--brand); }
+  h3 { font-size: 16px; margin: 0 0 8px; color: var(--brand); text-transform: uppercase; letter-spacing: .08em; }
+  .lede { color: var(--muted); margin: 0 0 20px; font-size: 16px; }
+  .small { color: var(--muted); font-size: 13px; }
+  /* ---------- Progress ---------- */
+  .progress-wrap {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 22px;
+  }
+  .progress {
+    flex: 1; height: 8px; background: var(--line); border-radius: 999px; overflow: hidden;
+  }
+  .progress > span {
+    display: block; height: 100%; background: linear-gradient(90deg, var(--brand-2), var(--brand));
+    width: 0%; transition: width .35s ease;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  /* ---------- Buttons ---------- */
+  .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
+  .btn {
+    border: 0; cursor: pointer; padding: 11px 22px; font-size: 15px; font-weight: 600;
+    border-radius: 8px; transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--brand); color: #fff; }
+  .btn-primary:hover { background: #16294a; }
+  .btn-ghost { background: transparent; color: var(--muted); padding-left: 4px; padding-right: 4px; }
+  .btn-ghost:hover { color: var(--ink); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  /* ---------- Form fields ---------- */
+  .field { display: block; margin-bottom: 16px; }
+  .field > label {
+    display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: var(--ink);
+  }
+  .field input[type="text"], .field input[type="email"], .field input[type="tel"],
+  .field select {
+    width: 100%; padding: 11px 13px; border: 1px solid var(--line);
+    border-radius: 8px; font-size: 15px; background: #fff; font-family: inherit;
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--brand-2); outline-offset: 1px; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 540px) { .row-2 { grid-template-columns: 1fr; } }
+  /* ---------- Question cards ---------- */
+  .function-tag {
+    display: inline-block; padding: 4px 10px; border-radius: 999px;
+    background: #e6eef9; color: var(--brand); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .question {
+    border-top: 1px solid var(--line); padding: 18px 0;
+  }
+  .question:first-of-type { border-top: 0; padding-top: 4px; }
+  .question .q-text { font-size: 16px; font-weight: 600; margin: 0 0 10px; }
+  .question .q-help { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+  .options {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  }
+  @media (max-width: 540px) { .options { grid-template-columns: 1fr; } }
+  .opt {
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 14px;
+    cursor: pointer; background: #fff; font-size: 14px; font-weight: 500;
+    text-align: center; user-select: none;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .opt:hover { border-color: var(--brand-2); }
+  .opt.selected { border-color: var(--brand); background: var(--brand); color: #fff; }
+  .opt[data-val="yes"].selected   { background: var(--good);  border-color: var(--good); }
+  .opt[data-val="part"].selected  { background: var(--warn); border-color: var(--warn); }
+  .opt[data-val="no"].selected    { background: var(--bad);   border-color: var(--bad); }
+  /* ---------- Results ---------- */
+  .score-hero {
+    display: grid; grid-template-columns: auto 1fr; gap: 28px;
+    align-items: center; padding: 16px 0 24px; border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  @media (max-width: 600px) { .score-hero { grid-template-columns: 1fr; text-align: center; } }
+  .gauge {
+    width: 160px; height: 160px; position: relative; margin: 0 auto;
+  }
+  .tier-pill {
+    display: inline-block; padding: 4px 12px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .tier-foundational { background: #fbe7e3; color: #8c2d24; }
+  .tier-developing   { background: #fff1d6; color: #7a4d10; }
+  .tier-mature       { background: #d8f1e3; color: #1f5a37; }
+  .func-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; margin: 18px 0 6px;
+  }
+  @media (max-width: 600px) { .func-grid { grid-template-columns: 1fr; } }
+  .func-row { display: grid; grid-template-columns: 100px 1fr 36px; gap: 10px; align-items: center; font-size: 14px; }
+  .func-row .func-name { font-weight: 600; }
+  .func-bar { background: var(--line); height: 8px; border-radius: 999px; overflow: hidden; }
+  .func-bar > span { display: block; height: 100%; border-radius: 999px; }
+  .recs li { margin-bottom: 8px; }
+  .cta-card {
+    margin-top: 28px; padding: 22px 26px; background: var(--brand); color: #fff;
+    border-radius: 12px; display: flex; gap: 18px; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .cta-card h3 { color: #fff; margin: 0 0 4px; font-size: 14px; }
+  .cta-card p { margin: 0; opacity: .9; font-size: 14px; max-width: 540px; }
+  .cta-card .btn-primary { background: #fff; color: var(--brand); }
+  .cta-card .btn-primary:hover { background: #e6eef9; }
+  /* ---------- Welcome screen ---------- */
+  .welcome ul.feature-list {
+    list-style: none; padding: 0; margin: 18px 0 0; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  @media (max-width: 600px) { .welcome ul.feature-list { grid-template-columns: 1fr; } }
+  .welcome ul.feature-list li {
+    border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+    background: #f9fbfe;
+  }
+  .welcome ul.feature-list li b { color: var(--brand); }
+  .footer-note {
+    text-align: center; color: var(--muted); font-size: 12px;
+    margin-top: 24px; line-height: 1.5;
+  }
+  /* ---------- Print ---------- */
+  @media print {
+    header.site, .actions, .cta-card .btn, #step-welcome, #step-profile, .question-step,
+    #step-teaser, #step-leadcapture { display: none !important; }
+    main { max-width: none; padding: 0; }
+    .card { box-shadow: none; border: 0; padding: 0; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="brand">
+    <div class="mark">R</div>
+    <div>RABORN IT &nbsp;<span style="opacity:.7;font-weight:400;">·  Security Profile</span></div>
+  </div>
+  <div class="meta">5-minute self-assessment · CISA CPG-aligned</div>
+</header>
+
+<main>
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap" style="display:none;">
+    <div class="progress"><span id="progressBar"></span></div>
+    <div class="progress-label" id="progressLabel">Step 1 of 9</div>
+  </div>
+
+  <div class="card">
+    <!-- Step: Welcome -->
+    <section id="step-welcome" class="welcome">
+      <h1>How strong is your cybersecurity posture?</h1>
+      <p class="lede">A short, honest self-check used by Raborn IT to put together your security profile. Answer 18 questions, get a tier rating and tailored recommendations. About 5 minutes.</p>
+      <ul class="feature-list">
+        <li><b>Standards-backed.</b> Questions drawn from CISA's Cross-Sector Cybersecurity Performance Goals and NIST CSF 2.0.</li>
+        <li><b>No-fluff scoring.</b> See where you're strong, where you have gaps, and what to fix first.</li>
+        <li><b>Yours to keep.</b> Download or print a clean PDF of your profile to share internally.</li>
+        <li><b>Optional follow-up.</b> Want a deeper review? Raborn IT will reach out only if you say so.</li>
+      </ul>
+      <div class="actions">
+        <span class="small">Privacy: your answers are submitted only when you choose to share them at the end.</span>
+        <button class="btn btn-primary" data-go="profile">Start &nbsp;→</button>
+      </div>
+    </section>
+
+    <!-- Step: Profile -->
+    <section id="step-profile" hidden>
+      <span class="function-tag">About you</span>
+      <h2 style="margin-top:8px;">Tell us a little about your business</h2>
+      <p class="lede">This helps us tailor your recommendations.</p>
+      <div class="row-2">
+        <label class="field">
+          <span>Industry</span>
+          <select id="profile-industry">
+            <option value="">Select…</option>
+            <option>Professional services</option>
+            <option>Healthcare</option>
+            <option>Financial services</option>
+            <option>Manufacturing / industrial</option>
+            <option>Construction / trades</option>
+            <option>Retail / e-commerce</option>
+            <option>Non-profit / education</option>
+            <option>Government / public sector</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Number of employees</span>
+          <select id="profile-size">
+            <option value="">Select…</option>
+            <option>1–10</option>
+            <option>11–50</option>
+            <option>51–250</option>
+            <option>251–1,000</option>
+            <option>1,000+</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">
+        <span>Do you handle any of the following data?</span>
+        <select id="profile-data">
+          <option value="">Select…</option>
+          <option>Customer payment / financial data</option>
+          <option>Patient / health information (PHI)</option>
+          <option>Personally identifiable information (PII)</option>
+          <option>Confidential business / trade secrets</option>
+          <option>None of the above</option>
+        </select>
+      </label>
+      <div class="actions">
+        <button class="btn btn-ghost" data-back="welcome">← Back</button>
+        <button class="btn btn-primary" id="profile-next" disabled>Continue &nbsp;→</button>
+      </div>
+    </section>
+
+    <!-- Function step container (rendered by JS) -->
+    <section id="step-questions" hidden></section>
+
+    <!-- Step: Teaser -->
+    <section id="step-teaser" hidden>
+      <span class="function-tag">Almost done</span>
+      <h2 style="margin-top:8px;">Your security profile is ready.</h2>
+      <p class="lede">Tell us where to send it. We'll also include a short list of priority actions matched to your weakest areas.</p>
+      <div style="background:#f5f9ff;border:1px solid #d6e4f4;border-radius:12px;padding:18px 22px;margin:6px 0 16px;">
+        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;">Preview</div>
+        <div style="font-size:34px;font-weight:800;color:var(--brand);margin-top:4px;" id="teaser-score">--</div>
+        <div style="font-size:14px;color:var(--muted);">Overall score, out of 100. Detailed breakdown unlocks once you continue.</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="teaser-back">← Back</button>
+        <button class="btn btn-primary" id="teaser-next">Get my profile &nbsp;→</button>
+      </div>
+    </section>
+
+    <!-- Step: Lead capture -->
+    <section id="step-leadcapture" hidden>
+      <span class="function-tag">Final step</span>
+      <h2 style="margin-top:8px;">Where should we send your profile?</h2>
+      <p class="lede">We'll only use this to deliver your results and (if you opt in) follow up with a brief recommendation.</p>
+      <div class="row-2">
+        <label class="field">
+          <span>Full name</span>
+          <input id="lead-name" type="text" autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Work email</span>
+          <input id="lead-email" type="email" autocomplete="email" />
+        </label>
+      </div>
+      <div class="row-2">
+        <label class="field">
+          <span>Company</span>
+          <input id="lead-company" type="text" autocomplete="organization" />
+        </label>
+        <label class="field">
+          <span>Phone (optional)</span>
+          <input id="lead-phone" type="tel" autocomplete="tel" />
+        </label>
+      </div>
+      <label class="field" style="display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);">
+        <input id="lead-optin" type="checkbox" style="margin-top:3px;" checked />
+        <span>I'd like Raborn IT to follow up with a 20-minute review of my results. (You can decline; we'll still send your profile.)</span>
+      </label>
+      <div class="actions">
+        <button class="btn btn-ghost" id="lead-back">← Back</button>
+        <button class="btn btn-primary" id="lead-submit" disabled>Show my results &nbsp;→</button>
+      </div>
+      <p class="small" style="margin-top:14px;">By submitting you agree that Raborn IT may contact you about your assessment. Your answers are confidential.</p>
+    </section>
+
+    <!-- Step: Results -->
+    <section id="step-results" hidden>
+      <span class="function-tag">Your security profile</span>
+      <h1 style="margin:8px 0 4px;" id="result-title">Security Profile</h1>
+      <p class="lede" id="result-subtitle">Generated for </p>
+
+      <div class="score-hero">
+        <div class="gauge">
+          <svg viewBox="0 0 120 120" width="160" height="160" aria-hidden="true">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#e3e8ef" stroke-width="14"/>
+            <circle id="gauge-arc" cx="60" cy="60" r="52" fill="none" stroke="#1F3A68" stroke-width="14"
+              stroke-linecap="round" transform="rotate(-90 60 60)"
+              stroke-dasharray="0 1000"/>
+            <text id="gauge-text" x="60" y="64" text-anchor="middle" font-size="26" font-weight="700" fill="#1F3A68">--</text>
+            <text x="60" y="84" text-anchor="middle" font-size="11" fill="#5a6470">out of 100</text>
+          </svg>
+        </div>
+        <div>
+          <div id="result-tier" class="tier-pill tier-developing">Developing</div>
+          <h2 id="result-headline" style="margin-top:10px;">Solid start, room to grow.</h2>
+          <p id="result-summary" class="lede" style="margin:6px 0 0;"></p>
+        </div>
+      </div>
+
+      <h3>Posture by NIST CSF function</h3>
+      <div class="func-grid" id="func-breakdown"></div>
+
+      <div style="margin-top:24px;">
+        <h3>Top priorities for the next 90 days</h3>
+        <ol class="recs" id="result-recs"></ol>
+      </div>
+
+      <div class="cta-card">
+        <div>
+          <h3 style="text-transform:uppercase;letter-spacing:.08em;">Want a deeper look?</h3>
+          <p>Raborn IT can run a full CSET-based assessment for your environment — every control mapped, every gap prioritized. We'll be in touch within one business day.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="window.print()">Save / print PDF</button>
+          <a class="btn btn-primary" style="text-decoration:none;display:inline-block;" href="mailto:hello@rabornit.com?subject=Security%20Profile%20follow-up">Email Raborn IT</a>
+        </div>
+      </div>
+
+      <p class="footer-note">
+        Questions adapted from CISA's Cross-Sector Cybersecurity Performance Goals (CPG 2.0) and the NIST Cybersecurity Framework 2.0. This profile is a directional self-assessment, not an audit. © Raborn IT.
+      </p>
+    </section>
+  </div>
+
+  <p class="footer-note" id="bottom-note">
+    Raborn IT · Customer Onboarding Tool — Phase 1 prototype
+  </p>
+</main>
+
+<script>
+/* -------- Question bank --------
+ * Six NIST CSF 2.0 functions × 3 questions each = 18.
+ * Each question has a weight (1-3) drawn from CPG impact rating.
+ * recIfWeak: text shown as a recommendation when this question is answered No/Partial.
+ */
+const FUNCTIONS = [
+  {
+    id: 'govern', name: 'Govern',
+    blurb: 'Ownership, policies, and managing risk from the providers you depend on.',
+    questions: [
+      { id: 'gv1', text: 'Is there someone formally accountable for cybersecurity in your organization?',
+        help: 'A named person or executive sponsor — not just "everyone."',
+        weight: 3,
+        recIfWeak: 'Designate a cybersecurity owner (internal lead or vCISO). Every other control depends on someone being accountable.' },
+      { id: 'gv2', text: 'Do employees acknowledge written cybersecurity and acceptable-use policies?',
+        help: 'Onboarding sign-off, annual refresh, or similar.',
+        weight: 2,
+        recIfWeak: 'Stand up a short cybersecurity policy + acceptable-use policy and have employees acknowledge them annually.' },
+      { id: 'gv3', text: 'Do you assess cybersecurity risk for IT vendors and software providers before onboarding them?',
+        help: 'A questionnaire, SOC 2 review, or similar — even informally.',
+        weight: 2,
+        recIfWeak: 'Adopt a lightweight third-party risk checklist for new IT vendors (MFA, breach history, SOC 2 / ISO 27001).' },
+    ],
+  },
+  {
+    id: 'identify', name: 'Identify',
+    blurb: 'Knowing what you have, where it is, and what matters most.',
+    questions: [
+      { id: 'id1', text: 'Do you maintain an up-to-date inventory of devices and software?',
+        help: 'Workstations, servers, mobile, SaaS apps — and who owns each.',
+        weight: 3,
+        recIfWeak: 'Stand up an asset inventory (RMM tool, spreadsheet, or both). You can\'t protect what you can\'t see.' },
+      { id: 'id2', text: 'Do you know where your sensitive data lives?',
+        help: 'Customer records, financial data, health info, IP — what systems hold it?',
+        weight: 2,
+        recIfWeak: 'Map your sensitive data: where it sits, who can reach it, and how it leaves the business.' },
+      { id: 'id3', text: 'Are critical systems and dependencies documented well enough to know what to restore first?',
+        help: 'If something goes down, do you know the order to bring things back?',
+        weight: 2,
+        recIfWeak: 'Document your top 5 critical systems and their dependencies — that\'s most of a recovery plan already.' },
+    ],
+  },
+  {
+    id: 'protect', name: 'Protect',
+    blurb: 'The everyday controls that stop most attacks before they start.',
+    questions: [
+      { id: 'pr1', text: 'Is multi-factor authentication (MFA) required on email, VPN, and any internet-facing systems?',
+        help: 'Phishing-resistant MFA where possible.',
+        weight: 3,
+        recIfWeak: 'Turn on MFA across email, remote access, and any admin portals. Single biggest control in this whole list.' },
+      { id: 'pr2', text: 'Are administrator accounts separated from regular user accounts?',
+        help: 'No browsing email or the web from an admin account.',
+        weight: 3,
+        recIfWeak: 'Split admin from daily-driver accounts and only use admin credentials when actually administering systems.' },
+      { id: 'pr3', text: 'Are devices kept current (OS, browsers) on a routine patching schedule?',
+        help: 'Within 30 days of release for normal patches; faster for critical vulnerabilities.',
+        weight: 2,
+        recIfWeak: 'Adopt a patching cadence: 30 days for routine, 14 days (or less) for critical CVEs. Track it.' },
+    ],
+  },
+  {
+    id: 'detect', name: 'Detect',
+    blurb: 'Seeing trouble early — before it turns into a real incident.',
+    questions: [
+      { id: 'dt1', text: 'Are security logs collected and reviewed (or watched by a provider)?',
+        help: 'Endpoint, identity (M365 / Google), firewall — somebody has eyes on it.',
+        weight: 2,
+        recIfWeak: 'Stand up centralized logging (EDR, identity, firewall). If you can\'t staff review, use an MDR or MSSP.' },
+      { id: 'dt2', text: 'Is endpoint detection / antivirus deployed and centrally monitored on every device?',
+        help: 'Modern EDR, not just standalone AV.',
+        weight: 3,
+        recIfWeak: 'Deploy a managed EDR product on every endpoint with a 24/7 monitoring tier. This is table stakes.' },
+      { id: 'dt3', text: 'Would you notice an unusual login (new country, new device, after-hours)?',
+        help: 'Conditional access alerts, identity protection, etc.',
+        weight: 2,
+        recIfWeak: 'Enable identity protection / conditional access alerts on your email and SaaS platforms.' },
+    ],
+  },
+  {
+    id: 'respond', name: 'Respond',
+    blurb: 'Knowing what to do — and who to call — when something goes wrong.',
+    questions: [
+      { id: 'rs1', text: 'Do you have a written incident response plan that names who does what?',
+        help: 'Who declares an incident, who talks to staff, who calls insurance.',
+        weight: 3,
+        recIfWeak: 'Write a one-page IR plan: declare, communicate, contain, recover, learn. Specifics > polish.' },
+      { id: 'rs2', text: 'Have you ever rehearsed your incident response plan?',
+        help: 'A tabletop exercise, walk-through, or live drill in the last year.',
+        weight: 2,
+        recIfWeak: 'Run a 60-minute tabletop exercise this quarter. Plans that have never been tested usually break under pressure.' },
+      { id: 'rs3', text: 'Do you know who to call externally during an incident?',
+        help: 'Legal counsel, insurance carrier, MSP, breach coach, law enforcement.',
+        weight: 2,
+        recIfWeak: 'Build a contact card with legal, cyber insurance, MSP / IR firm, and FBI / CISA reporting numbers.' },
+    ],
+  },
+  {
+    id: 'recover', name: 'Recover',
+    blurb: 'The ability to come back online quickly after a serious event.',
+    questions: [
+      { id: 'rc1', text: 'Are critical-system backups isolated from the production network?',
+        help: 'Off-network or immutable — ransomware can\'t reach them.',
+        weight: 3,
+        recIfWeak: 'Move backups off-network or to immutable storage. Ransomware that encrypts your backups is the headline scenario.' },
+      { id: 'rc2', text: 'Have you tested a real restore in the last 12 months?',
+        help: 'An actual restore — not just "the backup job is green."',
+        weight: 3,
+        recIfWeak: 'Schedule a quarterly restore test. Untested backups are not backups.' },
+      { id: 'rc3', text: 'Do you have cyber insurance, and do you know what your policy actually covers?',
+        help: 'Limits, retention, ransomware exclusions, IR firm requirements.',
+        weight: 2,
+        recIfWeak: 'Pull your cyber policy and confirm: limits, retention, ransomware coverage, and required IR firm.' },
+    ],
+  },
+];
+
+/* -------- State -------- */
+const state = {
+  step: 'welcome',
+  profile: { industry: '', size: '', data: '' },
+  answers: {},     // qid -> 'yes' | 'part' | 'no'
+  funcIndex: 0,    // when in the question phase, which function we're on
+  lead: { name: '', email: '', company: '', phone: '', optin: true },
+};
+
+/* -------- Helpers -------- */
+const $ = (id) => document.getElementById(id);
+const sections = ['welcome', 'profile', 'questions', 'teaser', 'leadcapture', 'results'];
+
+function show(stepId) {
+  state.step = stepId;
+  for (const id of sections) {
+    const el = document.getElementById('step-' + id);
+    if (el) el.hidden = id !== stepId;
+  }
+  // progress
+  const wrap = $('progressWrap');
+  if (stepId === 'welcome' || stepId === 'results') {
+    wrap.style.display = 'none';
+  } else {
+    wrap.style.display = 'flex';
+    let stepNum = 1, total = 9;
+    if (stepId === 'profile')      stepNum = 1;
+    else if (stepId === 'questions') stepNum = 2 + state.funcIndex;
+    else if (stepId === 'teaser')    stepNum = 8;
+    else if (stepId === 'leadcapture') stepNum = 9;
+    $('progressBar').style.width = ((stepNum - 1) / (total - 1) * 100) + '%';
+    $('progressLabel').textContent = `Step ${stepNum} of ${total}`;
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Render a single function's question step */
+function renderQuestionStep() {
+  const fn = FUNCTIONS[state.funcIndex];
+  const wrapper = $('step-questions');
+  wrapper.innerHTML = `
+    <span class="function-tag">${fn.name}</span>
+    <h2 style="margin-top:8px;">${fn.name}</h2>
+    <p class="lede">${fn.blurb}</p>
+    ${fn.questions.map(q => `
+      <div class="question" data-qid="${q.id}">
+        <p class="q-text">${q.text}</p>
+        ${q.help ? `<p class="q-help">${q.help}</p>` : ''}
+        <div class="options" role="radiogroup" aria-label="${q.text}">
+          <button class="opt" data-val="yes" type="button">Yes</button>
+          <button class="opt" data-val="part" type="button">Partially</button>
+          <button class="opt" data-val="no" type="button">No / Not sure</button>
+        </div>
+      </div>
+    `).join('')}
+    <div class="actions">
+      <button class="btn btn-ghost" id="q-back">← Back</button>
+      <button class="btn btn-primary" id="q-next" disabled>${state.funcIndex === FUNCTIONS.length - 1 ? 'See results' : 'Next'} &nbsp;→</button>
+    </div>
+  `;
+
+  // restore selections
+  for (const q of fn.questions) {
+    const sel = state.answers[q.id];
+    if (sel) {
+      const btn = wrapper.querySelector(`.question[data-qid="${q.id}"] .opt[data-val="${sel}"]`);
+      if (btn) btn.classList.add('selected');
+    }
+  }
+
+  // event handlers
+  wrapper.querySelectorAll('.options').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const btn = e.target.closest('.opt'); if (!btn) return;
+      const qid = btn.closest('.question').dataset.qid;
+      group.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.answers[qid] = btn.dataset.val;
+      checkQNext();
+    });
+  });
+  $('q-back').onclick = () => {
+    if (state.funcIndex === 0) show('profile');
+    else { state.funcIndex--; renderQuestionStep(); show('questions'); }
+  };
+  $('q-next').onclick = () => {
+    if (state.funcIndex === FUNCTIONS.length - 1) {
+      // teaser
+      const score = computeScore().total;
+      $('teaser-score').textContent = score + ' / 100';
+      show('teaser');
+    } else {
+      state.funcIndex++;
+      renderQuestionStep();
+      show('questions');
+    }
+  };
+
+  checkQNext();
+}
+
+function checkQNext() {
+  const fn = FUNCTIONS[state.funcIndex];
+  const allAnswered = fn.questions.every(q => state.answers[q.id]);
+  $('q-next').disabled = !allAnswered;
+}
+
+/* -------- Scoring -------- */
+function computeScore() {
+  const valMap = { yes: 1.0, part: 0.5, no: 0.0 };
+  let totalWeight = 0, totalEarned = 0;
+  const byFunc = {};
+  for (const fn of FUNCTIONS) {
+    let fw = 0, fe = 0;
+    for (const q of fn.questions) {
+      const v = valMap[state.answers[q.id]] ?? 0;
+      fw += q.weight;
+      fe += q.weight * v;
+    }
+    byFunc[fn.id] = Math.round((fe / fw) * 100);
+    totalWeight += fw;
+    totalEarned += fe;
+  }
+  const total = Math.round((totalEarned / totalWeight) * 100);
+  return { total, byFunc };
+}
+
+function tierFor(score) {
+  if (score >= 70) return { id: 'mature',       label: 'Mature',
+    headline: 'Strong posture — keep tuning.',
+    summary: 'You have most of the high-impact controls in place. Focus from here is on refinement, exercises, and closing the last few gaps so a single bad day doesn\'t become a serious incident.' };
+  if (score >= 40) return { id: 'developing',   label: 'Developing',
+    headline: 'Solid foundation, real gaps remain.',
+    summary: 'Core hygiene is partly in place but enough gaps remain that a determined attacker — or a careless mistake — could cause real damage. The recommendations below are ordered to give you the biggest risk reduction per hour.' };
+  return { id: 'foundational', label: 'Foundational',
+    headline: 'High exposure — start with the basics.',
+    summary: 'Foundational controls are missing. The recommendations below should be your near-term roadmap; each one will materially reduce your risk and most can be implemented in days, not months.' };
+}
+
+function buildRecommendations() {
+  const recs = [];
+  for (const fn of FUNCTIONS) {
+    for (const q of fn.questions) {
+      const v = state.answers[q.id];
+      if (v === 'no' || v === 'part') {
+        // Score severity = weight × (1 if no, 0.5 if part)
+        const severity = q.weight * (v === 'no' ? 1 : 0.5);
+        recs.push({ severity, fn: fn.name, text: q.recIfWeak });
+      }
+    }
+  }
+  recs.sort((a, b) => b.severity - a.severity);
+  return recs.slice(0, 5);
+}
+
+/* -------- Render results -------- */
+function renderResults() {
+  const { total, byFunc } = computeScore();
+  const tier = tierFor(total);
+
+  // Title / subtitle
+  $('result-title').textContent = `${state.lead.company || 'Your business'} — Security Profile`;
+  $('result-subtitle').textContent = `Generated for ${state.lead.name || 'you'} on ${new Date().toLocaleDateString()}`;
+
+  // Gauge
+  const arc = $('gauge-arc');
+  const circumference = 2 * Math.PI * 52;
+  const len = (total / 100) * circumference;
+  arc.setAttribute('stroke-dasharray', `${len} ${circumference - len}`);
+  arc.setAttribute('stroke', tier.id === 'mature' ? '#2f8b5a' : tier.id === 'developing' ? '#d18b27' : '#c14a3f');
+  $('gauge-text').textContent = total;
+
+  // Tier
+  const pill = $('result-tier');
+  pill.textContent = tier.label;
+  pill.className = 'tier-pill tier-' + tier.id;
+  $('result-headline').textContent = tier.headline;
+  $('result-summary').textContent = tier.summary;
+
+  // Function bars
+  const grid = $('func-breakdown');
+  grid.innerHTML = '';
+  for (const fn of FUNCTIONS) {
+    const pct = byFunc[fn.id];
+    const color = pct >= 70 ? '#2f8b5a' : pct >= 40 ? '#d18b27' : '#c14a3f';
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="func-row">
+        <span class="func-name">${fn.name}</span>
+        <span class="func-bar"><span style="width:${pct}%;background:${color};"></span></span>
+        <span style="text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);">${pct}</span>
+      </div>
+    `);
+  }
+
+  // Recommendations
+  const recs = buildRecommendations();
+  const recsEl = $('result-recs');
+  recsEl.innerHTML = '';
+  if (recs.length === 0) {
+    recsEl.innerHTML = '<li>You answered Yes to all of the questions in this assessment. The next step is a deeper, control-by-control review against a full standard like NIST CSF or NIST 800-171.</li>';
+  } else {
+    for (const r of recs) {
+      recsEl.insertAdjacentHTML('beforeend', `<li><b>${r.fn}.</b> ${r.text}</li>`);
+    }
+  }
+}
+
+/* -------- Wiring -------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // Welcome
+  document.querySelectorAll('[data-go="profile"]').forEach(b => {
+    b.onclick = () => show('profile');
+  });
+
+  // Profile back / next
+  document.querySelector('[data-back="welcome"]').onclick = () => show('welcome');
+  const profileFields = ['profile-industry', 'profile-size', 'profile-data'];
+  profileFields.forEach(id => $(id).addEventListener('change', checkProfile));
+  function checkProfile() {
+    const ok = profileFields.every(id => $(id).value);
+    $('profile-next').disabled = !ok;
+  }
+  $('profile-next').onclick = () => {
+    state.profile.industry = $('profile-industry').value;
+    state.profile.size     = $('profile-size').value;
+    state.profile.data     = $('profile-data').value;
+    state.funcIndex = 0;
+    renderQuestionStep();
+    show('questions');
+  };
+
+  // Teaser
+  $('teaser-back').onclick = () => {
+    state.funcIndex = FUNCTIONS.length - 1;
+    renderQuestionStep();
+    show('questions');
+  };
+  $('teaser-next').onclick = () => show('leadcapture');
+
+  // Lead capture
+  ['lead-name','lead-email','lead-company'].forEach(id => $(id).addEventListener('input', checkLead));
+  function checkLead() {
+    const name = $('lead-name').value.trim();
+    const email = $('lead-email').value.trim();
+    const company = $('lead-company').value.trim();
+    const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    $('lead-submit').disabled = !(name && okEmail && company);
+  }
+  $('lead-back').onclick = () => show('teaser');
+  $('lead-submit').onclick = () => {
+    state.lead.name = $('lead-name').value.trim();
+    state.lead.email = $('lead-email').value.trim();
+    state.lead.company = $('lead-company').value.trim();
+    state.lead.phone = $('lead-phone').value.trim();
+    state.lead.optin = $('lead-optin').checked;
+
+    // PROTOTYPE: log payload to console; in production this POSTs to an endpoint that
+    // pushes the lead to the CRM and emails the PDF snapshot back to the prospect.
+    const payload = {
+      submittedAt: new Date().toISOString(),
+      profile: state.profile,
+      lead: state.lead,
+      answers: state.answers,
+      score: computeScore(),
+    };
+    console.log('[Raborn IT] Phase 1 submission payload', payload);
+
+    renderResults();
+    show('results');
+  };
+});
+</script>
+</body>
+</html>
