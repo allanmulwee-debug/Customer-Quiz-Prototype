@@ -5,48 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Raborn IT — Security Profile</title>
 <meta name="description" content="A 5-minute security posture self-assessment, aligned to the CISA Cybersecurity Performance Goals and NIST Cybersecurity Framework 2.0." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
 <style>
   :root {
-    --brand: #1F3A68;
-    --brand-2: #2E75B6;
-    --ink: #1a1d24;
+    /* Raborn IT brand palette */
+    --raborn-navy: #12344C;
+    --raborn-green: #58BD88;
+    --raborn-green-light: #68E09E;
+    --raborn-white: #FFFFFF;
+    /* Functional tokens */
+    --brand: var(--raborn-navy);
+    --brand-2: var(--raborn-green);
+    --ink: #12344C;
     --muted: #5a6470;
-    --line: #e3e8ef;
-    --bg: #f5f7fb;
+    --line: #d9e3df;
+    --bg: #f5f9f7;
     --card: #ffffff;
-    --good: #2f8b5a;
+    --good: var(--raborn-green);
     --warn: #d18b27;
     --bad: #c14a3f;
-    --shadow: 0 6px 24px rgba(15, 30, 60, .07), 0 1px 3px rgba(15, 30, 60, .05);
+    --shadow: 0 6px 24px rgba(18, 52, 76, .08), 0 1px 3px rgba(18, 52, 76, .06);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 16px; line-height: 1.55; font-weight: 400;
     color: var(--ink);
     background: var(--bg);
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--brand-2); }
+  a { color: var(--raborn-green); font-weight: 500; }
+  a:hover { color: var(--raborn-navy); }
   /* ---------- Header ---------- */
   header.site {
-    background: var(--brand);
+    background: var(--raborn-navy);
     color: #fff;
     padding: 18px 28px;
     display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 4px solid var(--brand-2);
+    border-bottom: 4px solid var(--raborn-green);
   }
   .brand {
     display: flex; align-items: center; gap: 12px;
-    font-weight: 700; letter-spacing: .04em; font-size: 18px;
+    font-weight: 800; letter-spacing: .02em; font-size: 20px;
   }
   .brand .mark {
-    width: 32px; height: 32px; border-radius: 6px;
-    background: linear-gradient(135deg, #ffffff 0%, #c9d6ec 100%);
-    color: var(--brand);
-    display: grid; place-items: center; font-weight: 800; font-size: 15px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--raborn-white);
+    color: var(--raborn-navy);
+    display: grid; place-items: center; font-weight: 800; font-size: 17px;
+    border: 2px solid var(--raborn-green);
+    position: relative;
   }
-  header.site .meta { font-size: 13px; opacity: .85; }
+  .brand .mark::after {
+    /* small green tech-circuit dot, echoes the circular tech motif in the logo's "O" */
+    content: ""; position: absolute; right: -3px; top: -3px;
+    width: 9px; height: 9px; border-radius: 50%; background: var(--raborn-green);
+    box-shadow: 0 0 0 2px var(--raborn-navy);
+  }
+  .brand .wordmark { display: inline-flex; align-items: baseline; gap: 4px; }
+  .brand .wordmark .raborn { color: #fff; }
+  .brand .wordmark .it { color: var(--raborn-green); }
+  .brand .wordmark .divider { opacity: .55; font-weight: 400; margin: 0 4px; }
+  .brand .wordmark .sub { font-weight: 400; opacity: .8; font-size: 15px; }
+  header.site .meta { font-size: 13px; opacity: .85; font-weight: 400; }
   /* ---------- Layout ---------- */
   main { max-width: 880px; margin: 0 auto; padding: 28px 20px 80px; }
   .card {
@@ -56,9 +80,9 @@
     padding: 28px 32px;
     box-shadow: var(--shadow);
   }
-  h1 { font-size: 30px; margin: 0 0 8px; color: var(--brand); letter-spacing: -.01em; }
-  h2 { font-size: 22px; margin: 0 0 6px; color: var(--brand); }
-  h3 { font-size: 16px; margin: 0 0 8px; color: var(--brand); text-transform: uppercase; letter-spacing: .08em; }
+  h1 { font-size: 32px; margin: 0 0 10px; color: var(--raborn-navy); letter-spacing: -.015em; font-weight: 800; line-height: 1.2; }
+  h2 { font-size: 22px; margin: 0 0 6px; color: var(--raborn-navy); font-weight: 700; }
+  h3 { font-size: 14px; margin: 0 0 10px; color: var(--raborn-green); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
   .lede { color: var(--muted); margin: 0 0 20px; font-size: 16px; }
   .small { color: var(--muted); font-size: 13px; }
   /* ---------- Progress ---------- */
@@ -69,22 +93,29 @@
     flex: 1; height: 8px; background: var(--line); border-radius: 999px; overflow: hidden;
   }
   .progress > span {
-    display: block; height: 100%; background: linear-gradient(90deg, var(--brand-2), var(--brand));
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--raborn-green-light), var(--raborn-green));
     width: 0%; transition: width .35s ease;
   }
-  .progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; font-weight: 500; }
   /* ---------- Buttons ---------- */
   .actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
   .btn {
-    border: 0; cursor: pointer; padding: 11px 22px; font-size: 15px; font-weight: 600;
-    border-radius: 8px; transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+    border: 0; cursor: pointer; padding: 12px 24px; font-size: 15px; font-weight: 600;
+    border-radius: 8px; font-family: inherit; letter-spacing: .005em;
+    transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
   }
   .btn:active { transform: translateY(1px); }
-  .btn-primary { background: var(--brand); color: #fff; }
-  .btn-primary:hover { background: #16294a; }
-  .btn-ghost { background: transparent; color: var(--muted); padding-left: 4px; padding-right: 4px; }
-  .btn-ghost:hover { color: var(--ink); }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--raborn-green); color: var(--raborn-navy);
+    box-shadow: 0 1px 0 rgba(18,52,76,.08), 0 6px 14px rgba(88,189,136,.30);
+  }
+  .btn-primary:hover { background: var(--raborn-green-light); color: var(--raborn-navy); }
+  .btn-secondary { background: var(--raborn-navy); color: #fff; }
+  .btn-secondary:hover { background: #0a2233; }
+  .btn-ghost { background: transparent; color: var(--muted); padding-left: 4px; padding-right: 4px; font-weight: 500; }
+  .btn-ghost:hover { color: var(--raborn-navy); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
   /* ---------- Form fields ---------- */
   .field { display: block; margin-bottom: 16px; }
   .field > label {
@@ -93,16 +124,19 @@
   .field input[type="text"], .field input[type="email"], .field input[type="tel"],
   .field select {
     width: 100%; padding: 11px 13px; border: 1px solid var(--line);
-    border-radius: 8px; font-size: 15px; background: #fff; font-family: inherit;
+    border-radius: 8px; font-size: 15px; background: #fff; font-family: inherit; color: var(--ink);
   }
-  .field input:focus, .field select:focus { outline: 2px solid var(--brand-2); outline-offset: 1px; }
+  .field input:focus, .field select:focus {
+    outline: 2px solid var(--raborn-green); outline-offset: 1px; border-color: var(--raborn-green);
+  }
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 540px) { .row-2 { grid-template-columns: 1fr; } }
   /* ---------- Question cards ---------- */
   .function-tag {
-    display: inline-block; padding: 4px 10px; border-radius: 999px;
-    background: #e6eef9; color: var(--brand); font-size: 12px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .08em;
+    display: inline-block; padding: 5px 12px; border-radius: 999px;
+    background: rgba(88, 189, 136, .14); color: var(--raborn-navy);
+    border: 1px solid rgba(88, 189, 136, .35);
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
   }
   .question {
     border-top: 1px solid var(--line); padding: 18px 0;
@@ -116,15 +150,15 @@
   @media (max-width: 540px) { .options { grid-template-columns: 1fr; } }
   .opt {
     border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 14px;
-    cursor: pointer; background: #fff; font-size: 14px; font-weight: 500;
-    text-align: center; user-select: none;
-    transition: border-color .15s, background .15s, color .15s;
+    cursor: pointer; background: #fff; font-size: 14px; font-weight: 600;
+    text-align: center; user-select: none; color: var(--raborn-navy); font-family: inherit;
+    transition: border-color .15s, background .15s, color .15s, box-shadow .15s;
   }
-  .opt:hover { border-color: var(--brand-2); }
-  .opt.selected { border-color: var(--brand); background: var(--brand); color: #fff; }
-  .opt[data-val="yes"].selected   { background: var(--good);  border-color: var(--good); }
-  .opt[data-val="part"].selected  { background: var(--warn); border-color: var(--warn); }
-  .opt[data-val="no"].selected    { background: var(--bad);   border-color: var(--bad); }
+  .opt:hover { border-color: var(--raborn-green); }
+  .opt.selected { color: #fff; box-shadow: 0 2px 6px rgba(18,52,76,.12); }
+  .opt[data-val="yes"].selected   { background: var(--raborn-green); border-color: var(--raborn-green); color: var(--raborn-navy); }
+  .opt[data-val="part"].selected  { background: var(--warn); border-color: var(--warn); color: #fff; }
+  .opt[data-val="no"].selected    { background: var(--bad);  border-color: var(--bad);  color: #fff; }
   /* ---------- Results ---------- */
   .score-hero {
     display: grid; grid-template-columns: auto 1fr; gap: 28px;
@@ -136,12 +170,12 @@
     width: 160px; height: 160px; position: relative; margin: 0 auto;
   }
   .tier-pill {
-    display: inline-block; padding: 4px 12px; border-radius: 999px;
-    font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    display: inline-block; padding: 5px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   }
   .tier-foundational { background: #fbe7e3; color: #8c2d24; }
   .tier-developing   { background: #fff1d6; color: #7a4d10; }
-  .tier-mature       { background: #d8f1e3; color: #1f5a37; }
+  .tier-mature       { background: rgba(88, 189, 136, .22); color: #14593a; border: 1px solid rgba(88, 189, 136, .5); }
   .func-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; margin: 18px 0 6px;
   }
@@ -152,14 +186,14 @@
   .func-bar > span { display: block; height: 100%; border-radius: 999px; }
   .recs li { margin-bottom: 8px; }
   .cta-card {
-    margin-top: 28px; padding: 22px 26px; background: var(--brand); color: #fff;
+    margin-top: 28px; padding: 24px 28px; background: var(--raborn-navy); color: #fff;
     border-radius: 12px; display: flex; gap: 18px; align-items: center; justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: wrap; border-left: 6px solid var(--raborn-green);
   }
-  .cta-card h3 { color: #fff; margin: 0 0 4px; font-size: 14px; }
-  .cta-card p { margin: 0; opacity: .9; font-size: 14px; max-width: 540px; }
-  .cta-card .btn-primary { background: #fff; color: var(--brand); }
-  .cta-card .btn-primary:hover { background: #e6eef9; }
+  .cta-card h3 { color: var(--raborn-green); margin: 0 0 6px; font-size: 13px; }
+  .cta-card p { margin: 0; opacity: .92; font-size: 14px; max-width: 540px; line-height: 1.5; }
+  .cta-card .btn-primary { background: var(--raborn-green); color: var(--raborn-navy); }
+  .cta-card .btn-primary:hover { background: var(--raborn-green-light); }
   /* ---------- Welcome screen ---------- */
   .welcome ul.feature-list {
     list-style: none; padding: 0; margin: 18px 0 0; display: grid;
@@ -167,10 +201,10 @@
   }
   @media (max-width: 600px) { .welcome ul.feature-list { grid-template-columns: 1fr; } }
   .welcome ul.feature-list li {
-    border: 1px solid var(--line); border-radius: 10px; padding: 14px;
-    background: #f9fbfe;
+    border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px;
+    background: #fff; border-left: 4px solid var(--raborn-green);
   }
-  .welcome ul.feature-list li b { color: var(--brand); }
+  .welcome ul.feature-list li b { color: var(--raborn-navy); font-weight: 700; }
   .footer-note {
     text-align: center; color: var(--muted); font-size: 12px;
     margin-top: 24px; line-height: 1.5;
@@ -188,8 +222,11 @@
 <body>
 <header class="site">
   <div class="brand">
-    <div class="mark">R</div>
-    <div>RABORN IT &nbsp;<span style="opacity:.7;font-weight:400;">·  Security Profile</span></div>
+    <div class="mark" aria-hidden="true">R</div>
+    <div class="wordmark">
+      <span class="raborn">RABORN</span><span class="it">IT</span>
+      <span class="divider">·</span><span class="sub">Security Profile</span>
+    </div>
   </div>
   <div class="meta">5-minute self-assessment · CISA CPG-aligned</div>
 </header>
@@ -276,9 +313,9 @@
       <span class="function-tag">Almost done</span>
       <h2 style="margin-top:8px;">Your security profile is ready.</h2>
       <p class="lede">Tell us where to send it. We'll also include a short list of priority actions matched to your weakest areas.</p>
-      <div style="background:#f5f9ff;border:1px solid #d6e4f4;border-radius:12px;padding:18px 22px;margin:6px 0 16px;">
-        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;">Preview</div>
-        <div style="font-size:34px;font-weight:800;color:var(--brand);margin-top:4px;" id="teaser-score">--</div>
+      <div style="background:#fff;border:1px solid var(--line);border-left:5px solid var(--raborn-green);border-radius:12px;padding:20px 24px;margin:6px 0 16px;">
+        <div style="font-size:13px;color:var(--raborn-green);text-transform:uppercase;letter-spacing:.1em;font-weight:700;">Preview</div>
+        <div style="font-size:38px;font-weight:800;color:var(--raborn-navy);margin-top:4px;line-height:1.1;" id="teaser-score">--</div>
         <div style="font-size:14px;color:var(--muted);">Overall score, out of 100. Detailed breakdown unlocks once you continue.</div>
       </div>
       <div class="actions">
@@ -332,12 +369,12 @@
       <div class="score-hero">
         <div class="gauge">
           <svg viewBox="0 0 120 120" width="160" height="160" aria-hidden="true">
-            <circle cx="60" cy="60" r="52" fill="none" stroke="#e3e8ef" stroke-width="14"/>
-            <circle id="gauge-arc" cx="60" cy="60" r="52" fill="none" stroke="#1F3A68" stroke-width="14"
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#d9e3df" stroke-width="14"/>
+            <circle id="gauge-arc" cx="60" cy="60" r="52" fill="none" stroke="#58BD88" stroke-width="14"
               stroke-linecap="round" transform="rotate(-90 60 60)"
               stroke-dasharray="0 1000"/>
-            <text id="gauge-text" x="60" y="64" text-anchor="middle" font-size="26" font-weight="700" fill="#1F3A68">--</text>
-            <text x="60" y="84" text-anchor="middle" font-size="11" fill="#5a6470">out of 100</text>
+            <text id="gauge-text" x="60" y="64" text-anchor="middle" font-size="26" font-weight="800" fill="#12344C" font-family="Inter, sans-serif">--</text>
+            <text x="60" y="84" text-anchor="middle" font-size="11" fill="#5a6470" font-family="Inter, sans-serif">out of 100</text>
           </svg>
         </div>
         <div>
@@ -663,7 +700,7 @@ function renderResults() {
   const circumference = 2 * Math.PI * 52;
   const len = (total / 100) * circumference;
   arc.setAttribute('stroke-dasharray', `${len} ${circumference - len}`);
-  arc.setAttribute('stroke', tier.id === 'mature' ? '#2f8b5a' : tier.id === 'developing' ? '#d18b27' : '#c14a3f');
+  arc.setAttribute('stroke', tier.id === 'mature' ? '#58BD88' : tier.id === 'developing' ? '#d18b27' : '#c14a3f');
   $('gauge-text').textContent = total;
 
   // Tier
@@ -678,7 +715,7 @@ function renderResults() {
   grid.innerHTML = '';
   for (const fn of FUNCTIONS) {
     const pct = byFunc[fn.id];
-    const color = pct >= 70 ? '#2f8b5a' : pct >= 40 ? '#d18b27' : '#c14a3f';
+    const color = pct >= 70 ? '#58BD88' : pct >= 40 ? '#d18b27' : '#c14a3f';
     grid.insertAdjacentHTML('beforeend', `
       <div class="func-row">
         <span class="func-name">${fn.name}</span>
